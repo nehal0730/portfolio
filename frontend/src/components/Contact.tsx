@@ -71,7 +71,6 @@ export default function Contact({ profile }: { profile: Profile }) {
             <a href={`mailto:${profile.email}`} className="flex items-center gap-3 text-text hover:text-link link-underline w-fit">
               {profile.email}
             </a>
-            <p className="text-text-muted">{profile.phone}</p>
             <p className="text-text-muted">{profile.location}</p>
           </div>
         </div>

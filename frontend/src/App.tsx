@@ -35,7 +35,7 @@ export default function App() {
     <div className="min-h-screen">
       <Navbar />
       <main>
-        <Hero profile={data.profile} projectCount={data.projects.length} />
+        <Hero />
         <About profile={data.profile} />
         <Experience experience={data.experience} />
         <Projects projects={data.projects} />

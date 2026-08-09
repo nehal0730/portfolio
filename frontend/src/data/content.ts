@@ -7,10 +7,9 @@ export const fallbackData: PortfolioData = {
     name: "Nehal Jain",
     role: "Full Stack Developer & AI Systems Builder",
     summary:
-      "I'm drawn to problems where getting it wrong actually costs something — a fraud model that misses the one transaction that mattered, a network that drops a message it can never retry. That's what pulled me toward systems work over one-off scripts, and toward building things end-to-end rather than stopping at a demo — because that's usually where the real problems, and the real learning, show up.",
+      "I'm a Computer Science student who enjoys building across the stack — from crafting thoughtful interfaces to designing APIs, data flows, and intelligent systems behind them.\n\nI'm most interested in problems where software needs to be more than a working demo: systems that are reliable, understandable, and built with real-world constraints in mind. I like exploring the reasoning behind a product, choosing the right architecture, and taking an idea all the way from concept to implementation.",
     location: "Noida, India",
     email: "nehaljain0730@gmail.com",
-    phone: "+91-9599797061",
     links: { linkedin: "#", github: "#", leetcode: "#" },
     education: [
       {

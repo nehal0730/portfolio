@@ -41,7 +41,6 @@ export interface Profile {
   summary: string;
   location: string;
   email: string;
-  phone: string;
   links: { linkedin: string; github: string; leetcode: string };
   education: EducationItem[];
 }
