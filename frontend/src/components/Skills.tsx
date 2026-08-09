@@ -12,7 +12,7 @@ const ICONS: Record<string, LucideIcon> = {
 
 export default function Skills({ skills }: { skills: SkillGroup[] }) {
   return (
-    <section id="skills" className="container-px py-24 sm:py-32 border-b border-line">
+    <section id="skills" className="container-px py-12 sm:py-16 border-b border-line">
       <motion.p
         initial={{ opacity: 0, y: 12 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -27,7 +27,7 @@ export default function Skills({ skills }: { skills: SkillGroup[] }) {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-80px" }}
         transition={{ duration: 0.6, delay: 0.05 }}
-        className="section-heading mb-14"
+        className="section-heading mb-8"
       >
         The stack, by role.
       </motion.h2>

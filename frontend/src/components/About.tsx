@@ -3,7 +3,7 @@ import { Profile } from "../types";
 
 export default function About({ profile }: { profile: Profile }) {
   return (
-    <section id="about" className="container-px py-24 sm:py-32 border-b border-line">
+    <section id="about" className="container-px py-12 sm:py-16 border-b border-line">
       <div className="grid lg:grid-cols-12 gap-10 lg:gap-16">
         <div className="lg:col-span-4">
           <motion.p

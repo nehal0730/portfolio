@@ -35,7 +35,7 @@ export default function Contact({ profile }: { profile: Profile }) {
   }
 
   return (
-    <section id="contact" className="container-px py-24 sm:py-32">
+    <section id="contact" className="container-px py-12 sm:py-16">
       <div className="grid lg:grid-cols-12 gap-10 lg:gap-16">
         <div className="lg:col-span-5">
           <motion.p

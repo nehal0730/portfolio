@@ -43,7 +43,7 @@ export default function Navbar() {
     >
       <nav className="container-px flex items-center justify-between h-16">
         <a href="#hero" className="font-display font-semibold text-lg tracking-tight text-text">
-          N<span className="text-signal">.</span>Jain
+          Nehal Jain
         </a>
 
         <ul className="hidden md:flex items-center gap-8">

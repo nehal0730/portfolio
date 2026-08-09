@@ -1,122 +1,3 @@
-// import { useRef } from "react";
-// import { motion, useScroll, useTransform } from "framer-motion";
-// import NetworkCanvas from "./NetworkCanvas";
-// import { Profile } from "../types";
-
-// const container = {
-//   hidden: {},
-//   show: {
-//     transition: { staggerChildren: 0.12, delayChildren: 0.15 },
-//   },
-// };
-
-// const item = {
-//   hidden: { opacity: 0, y: 18 },
-//   show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] } },
-// };
-
-// export default function Hero({ profile, projectCount }: { profile: Profile; projectCount: number }) {
-//   const sectionRef = useRef<HTMLElement>(null);
-//   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start start", "end start"] });
-//   const contentY = useTransform(scrollYProgress, [0, 1], [0, 60]);
-//   const contentOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
-
-//   return (
-//     <section
-//       ref={sectionRef}
-//       id="hero"
-//       className="relative min-h-screen flex items-center overflow-hidden border-b border-line pt-16"
-//     >
-//       <div className="absolute inset-0 bg-grid bg-[size:44px_44px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_30%,black,transparent)] opacity-40" />
-//       <NetworkCanvas />
-//       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-ink/40 to-ink pointer-events-none" />
-
-//       <motion.div
-//         variants={container}
-//         initial="hidden"
-//         animate="show"
-//         style={{ y: contentY, opacity: contentOpacity }}
-//         className="relative container-px w-full py-20"
-//       >
-//         <motion.p variants={item} className="eyebrow mb-6 inline-flex items-center gap-2">
-//           <span className="relative flex h-1.5 w-1.5">
-//             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-signal opacity-60" />
-//             <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-signal" />
-//           </span>
-//           Full Stack Development · Applied AI Systems
-//         </motion.p>
-
-//         <motion.h1
-//           variants={item}
-//           className="font-display font-semibold text-[13vw] sm:text-6xl lg:text-7xl leading-[1.02] tracking-tight max-w-4xl"
-//         >
-//           Systems that
-//           <br />
-//           <span className="relative inline-block text-signal">
-//             connect
-//             <motion.span
-//               initial={{ scaleX: 0 }}
-//               animate={{ scaleX: 1 }}
-//               transition={{ duration: 0.8, delay: 0.9, ease: [0.16, 1, 0.3, 1] }}
-//               style={{ transformOrigin: "left" }}
-//               className="absolute left-0 -bottom-1 h-[3px] w-full bg-signal/50 rounded-full"
-//             />
-//           </span>
-//           ,{" "}
-//           <span className="relative inline-block text-link">
-//             verify
-//             <motion.span
-//               initial={{ scaleX: 0 }}
-//               animate={{ scaleX: 1 }}
-//               transition={{ duration: 0.8, delay: 1.05, ease: [0.16, 1, 0.3, 1] }}
-//               style={{ transformOrigin: "left" }}
-//               className="absolute left-0 -bottom-1 h-[3px] w-full bg-link/50 rounded-full"
-//             />
-//           </span>
-//           , and reason.
-//         </motion.h1>
-
-//         <motion.p variants={item} className="mt-8 max-w-xl text-text-muted text-base sm:text-lg leading-relaxed">
-//           {profile.summary}
-//         </motion.p>
-
-//         <motion.div variants={item} className="mt-10 flex flex-wrap items-center gap-4">
-//           <motion.a
-//             whileHover={{ scale: 1.03 }}
-//             whileTap={{ scale: 0.97 }}
-//             href="#projects"
-//             className="inline-flex items-center gap-2 bg-signal text-ink font-mono text-sm font-medium uppercase tracking-wide px-6 py-3 rounded-full hover:brightness-110 transition"
-//           >
-//             View projects
-//           </motion.a>
-//           <motion.a
-//             whileHover={{ scale: 1.03 }}
-//             whileTap={{ scale: 0.97 }}
-//             href="#contact"
-//             className="inline-flex items-center gap-2 border border-line text-text font-mono text-sm uppercase tracking-wide px-6 py-3 rounded-full hover:border-link hover:text-link transition"
-//           >
-//             Get in touch
-//           </motion.a>
-//         </motion.div>
-
-//         <motion.div variants={item} className="mt-16 flex flex-wrap gap-x-10 gap-y-4 font-mono text-xs text-text-faint">
-//           <span>
-//             <span className="text-text">{projectCount}</span> shipped projects
-//           </span>
-//           <span>
-//             <span className="text-text">600+</span> DSA problems solved
-//           </span>
-//           <span>
-//             <span className="text-text">8.75</span> CGPA · CSE
-//           </span>
-//           <span className="text-text-muted">{profile.location}</span>
-//         </motion.div>
-//       </motion.div>
-//     </section>
-//   );
-// }
-
-
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import NetworkCanvas from "./NetworkCanvas";
@@ -198,7 +79,9 @@ export default function Hero({ profile, projectCount }: { profile: Profile; proj
         </motion.h1>
 
         <motion.p variants={item} className="mt-8 max-w-xl text-text-muted text-base sm:text-lg leading-relaxed">
-          {profile.summary}
+          Final-year Computer Science student at JIIT, currently interning at BlackBytt. I build things meant to
+          hold up under real conditions — a fraud-detection model tested against 10,000+ transactions, a mesh
+          network engineered to keep working when the internet doesn't. Open to full-stack and applied-AI roles.
         </motion.p>
 
         <motion.div variants={item} className="mt-10 flex flex-wrap items-center gap-4">
@@ -218,19 +101,6 @@ export default function Hero({ profile, projectCount }: { profile: Profile; proj
           >
             Get in touch
           </motion.a>
-        </motion.div>
-
-        <motion.div variants={item} className="mt-16 flex flex-wrap gap-x-10 gap-y-4 font-mono text-xs text-text-faint">
-          <span>
-            <span className="text-text">{projectCount}</span> shipped projects
-          </span>
-          <span>
-            <span className="text-text">600+</span> DSA problems solved
-          </span>
-          <span>
-            <span className="text-text">8.75</span> CGPA · CSE
-          </span>
-          <span className="text-text-muted">{profile.location}</span>
         </motion.div>
         </div>
 

@@ -54,6 +54,28 @@ Open **http://localhost:5173** in your browser.
 - **Resume download:** `frontend/public/Nehal_Jain_Resume.pdf` is wired to the "Resume ↓" button — swap the file to update it.
 - **Colors/type:** all design tokens live in `frontend/tailwind.config.js` and `frontend/src/index.css`.
 
+## Contact form email delivery
+
+By default, `POST /api/contact` validates and **stores** submissions server-side (logged to the console and viewable at `GET /api/contact`) but does **not** email you — nothing is configured out of the box. To actually receive messages in your inbox, fill in the SMTP settings in `backend/.env`:
+
+```bash
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=your-email@gmail.com
+SMTP_PASS=your-16-character-app-password
+CONTACT_TO_EMAIL=nehaljain0730@gmail.com
+```
+
+**Using Gmail (recommended for a quick setup):**
+1. Turn on 2-Step Verification on your Google account: https://myaccount.google.com/security
+2. Generate an App Password: https://myaccount.google.com/apppasswords (choose "Mail" as the app) — Google gives you a 16-character password.
+3. Use that as `SMTP_PASS` — **not** your regular Gmail password (Gmail blocks regular-password SMTP logins).
+4. Restart `npm run dev` in `backend/` after editing `.env`.
+
+Once set, submitting the form will both email you and store a backup copy in memory. If SMTP isn't configured (or a send fails for any reason), the form still validates and stores the message — check your server's console output or hit `GET /api/contact` to see anything that didn't get emailed.
+
+Prefer a different provider (SendGrid, Resend, Mailgun, Outlook/Office365)? Swap the `host`/`port`/`auth` values in `backend/src/routes/contact.ts` — nodemailer supports most SMTP providers with the same config shape.
+
 ## Production build
 
 ```bash

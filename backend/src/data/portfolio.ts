@@ -138,7 +138,7 @@ export const profile = {
   name: "Nehal Jain",
   role: "Full Stack Developer & AI Systems Builder",
   summary:
-    "Full-stack developer building scalable web applications and AI-powered systems with the MERN stack and FastAPI. Focused on clean architecture, sound system design, and reliable, user-centric products — from fraud-detection pipelines to resilient offline-first networks.",
+    "I'm drawn to problems where getting it wrong actually costs something — a fraud model that misses the one transaction that mattered, a network that drops a message it can never retry. That's what pulled me toward systems work over one-off scripts, and toward building things end-to-end rather than stopping at a demo — because that's usually where the real problems, and the real learning, show up.",
   location: "Noida, India",
   email: "nehaljain0730@gmail.com",
   phone: "+91-9599797061",
