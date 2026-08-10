@@ -1,12 +1,13 @@
+import "./env";
 import express, { Request, Response } from "express";
 import cors from "cors";
-import dotenv from "dotenv";
+// import dotenv from "dotenv";
 import path from "path";
 import rateLimit from "express-rate-limit";
 import portfolioRoutes from "./routes/portfolio";
 import contactRoutes from "./routes/contact";
 
-dotenv.config();
+// dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 4000;
