@@ -1,6 +1,7 @@
 import { useState, FormEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Profile } from "../types";
+import { apiUrl } from "../lib/api";
 
 type Status = "idle" | "sending" | "success" | "error";
 
@@ -14,7 +15,7 @@ export default function Contact({ profile }: { profile: Profile }) {
     setStatus("sending");
     setFeedback("");
     try {
-      const res = await fetch("/api/contact", {
+      const res = await fetch(apiUrl("/api/contact"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),

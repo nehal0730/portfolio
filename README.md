@@ -56,33 +56,82 @@ Open **http://localhost:5173** in your browser.
 
 ## Contact form email delivery
 
-By default, `POST /api/contact` validates and **stores** submissions server-side (logged to the console and viewable at `GET /api/contact`) but does **not** email you — nothing is configured out of the box. To actually receive messages in your inbox, fill in the SMTP settings in `backend/.env`:
+By default, `POST /api/contact` validates and **stores** submissions server-side (logged to the console and viewable at `GET /api/contact`) but does **not** email you — nothing is configured out of the box.
 
-```bash
-SMTP_HOST=smtp.gmail.com
-SMTP_PORT=587
-SMTP_USER=your-email@gmail.com
-SMTP_PASS=your-16-character-app-password
-CONTACT_TO_EMAIL=nehaljain0730@gmail.com
-```
+**Recommended: Resend** (no 2FA or app password needed)
+1. Sign up free at https://resend.com and grab an API key from the dashboard.
+2. Add to `backend/.env`:
+   ```bash
+   RESEND_API_KEY=re_your_api_key_here
+   CONTACT_TO_EMAIL=nehaljain0730@gmail.com
+   ```
+3. Restart `npm run dev` in `backend/`. Messages will send from Resend's shared test domain (`onboarding@resend.dev`) — fine for now; verify your own domain later at https://resend.com/domains if you want it to send from your own address.
 
-**Using Gmail (recommended for a quick setup):**
-1. Turn on 2-Step Verification on your Google account: https://myaccount.google.com/security
-2. Generate an App Password: https://myaccount.google.com/apppasswords (choose "Mail" as the app) — Google gives you a 16-character password.
-3. Use that as `SMTP_PASS` — **not** your regular Gmail password (Gmail blocks regular-password SMTP logins).
-4. Restart `npm run dev` in `backend/` after editing `.env`.
+**Alternative: Gmail (or another SMTP provider)**
+Gmail requires 2-Step Verification to be turned on before it will even offer an App Password — that's a Google account policy, not something this code can bypass. If 2FA isn't an option for you, use Resend above instead. If it is:
+1. Turn on 2-Step Verification: https://myaccount.google.com/security
+2. Generate an App Password: https://myaccount.google.com/apppasswords → choose "Mail"
+3. Add to `backend/.env`:
+   ```bash
+   SMTP_HOST=smtp.gmail.com
+   SMTP_PORT=587
+   SMTP_USER=your-email@gmail.com
+   SMTP_PASS=your-16-character-app-password
+   CONTACT_TO_EMAIL=nehaljain0730@gmail.com
+   ```
 
-Once set, submitting the form will both email you and store a backup copy in memory. If SMTP isn't configured (or a send fails for any reason), the form still validates and stores the message — check your server's console output or hit `GET /api/contact` to see anything that didn't get emailed.
+Either way: the route emails you **and** keeps a backup copy in memory, so even if a send fails, nothing's lost — check the server console or hit `GET /api/contact`. If both `RESEND_API_KEY` and SMTP vars are set, Resend is tried first with SMTP as a fallback.
 
-Prefer a different provider (SendGrid, Resend, Mailgun, Outlook/Office365)? Swap the `host`/`port`/`auth` values in `backend/src/routes/contact.ts` — nodemailer supports most SMTP providers with the same config shape.
+## Deploying
 
-## Production build
+The two halves deploy separately: the backend to a Node host, the frontend to a static host. Recommended combo — **Render** for the backend, **Vercel** for the frontend — but any equivalent pair works the same way.
 
-```bash
-# backend
-cd backend && npm run build && npm start
+**0. Push to GitHub** — both platforms deploy by connecting to a repo.
 
-# frontend
-cd frontend && npm run build   # outputs static files to frontend/dist
-```
-Deploy `frontend/dist` to any static host (Vercel, Netlify, GitHub Pages) and `backend` to any Node host (Render, Railway, Fly.io). Set `CLIENT_ORIGIN` in the backend's `.env` to your deployed frontend URL, and point the frontend's fetch calls at your deployed API URL (or keep the Vite proxy for same-origin deployments behind a reverse proxy).
+**1. Deploy the backend (Render)**
+1. https://render.com → New → Web Service → connect your repo.
+2. Root directory: `backend`
+3. Build command: `npm install && npm run build`
+4. Start command: `npm start`
+5. Add environment variables (Render's dashboard, not a committed `.env`): `RESEND_API_KEY`, `CONTACT_TO_EMAIL`, and `CLIENT_ORIGIN` (leave this as a placeholder for now — you'll set it for real in step 3).
+6. Deploy. Copy the resulting URL, e.g. `https://nehal-portfolio-api.onrender.com`.
+
+**2. Deploy the frontend (Vercel)**
+1. https://vercel.com → New Project → import the same repo.
+2. Root directory: `frontend`
+3. Framework preset: Vite (auto-detected). Build command `npm run build`, output directory `dist` (defaults, shouldn't need changing).
+4. Add environment variable `VITE_API_URL` = the backend URL from step 1 (e.g. `https://nehal-portfolio-api.onrender.com`).
+5. Deploy. Copy the resulting URL, e.g. `https://nehal-jain.vercel.app`.
+
+**3. Connect the two**
+Go back to the backend's env vars on Render and set `CLIENT_ORIGIN` to the real frontend URL from step 2, then redeploy the backend (Render usually does this automatically on env var changes; trigger a manual redeploy if not). This is what makes CORS allow the frontend to actually call the API.
+
+**4. Test it**
+Open the deployed frontend URL, check that project data loads (confirms the API connection) and submit the contact form (confirms email delivery + CORS are both working).
+
+**Custom domain:** add it in Vercel's project settings (Vercel handles the DNS/SSL instructions); no backend changes needed unless you also want a custom domain on the API, in which case update `CLIENT_ORIGIN` and `VITE_API_URL` to match.
+
+**Note on Render's free tier:** free web services spin down after inactivity and take ~30–60s to wake on the next request — the first project-data load or contact-form submission after idle time may feel slow. Fine for a portfolio; upgrade the plan if that matters to you.
+
+### Alternative: everything on Render as one service
+
+If you'd rather not manage two platforms, the backend can serve the built frontend directly — one Render service, no CORS to configure, no `VITE_API_URL` needed.
+
+1. https://render.com → New → Web Service → connect your repo.
+2. Root directory: leave **blank** (repo root) — the build needs access to both `frontend/` and `backend/`.
+3. Build command:
+   ```bash
+   cd frontend && npm install && npm run build && cd ../backend && npm install && npm run build
+   ```
+4. Start command:
+   ```bash
+   cd backend && npm start
+   ```
+5. Environment variables: `RESEND_API_KEY`, `CONTACT_TO_EMAIL`, and `SERVE_FRONTEND=true` (this last one tells the backend to serve `frontend/dist` instead of just the API).
+6. Deploy. The one resulting URL serves both the site and the API — no `CLIENT_ORIGIN`/`VITE_API_URL` wiring needed, since everything's same-origin.
+
+Trade-off versus the two-service setup: any change means redeploying the whole thing together rather than independently, and you lose Vercel's edge-network speed for the static frontend. For a portfolio this is a fine trade for the simplicity.
+
+## Local development vs. production — how the API URL works
+
+Locally, `frontend/src/App.tsx` and `Contact.tsx` call a small `apiUrl()` helper (`frontend/src/lib/api.ts`) instead of hardcoding `/api/...`. With no `VITE_API_URL` set, it resolves to a relative path, which `vite.config.ts`'s dev proxy forwards to `http://localhost:4000` — so local dev needs zero configuration. In production there's no such proxy, so setting `VITE_API_URL` (step 2 above) points those same calls at your deployed backend directly.

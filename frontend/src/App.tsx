@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { PortfolioData } from "./types";
 import { fallbackData } from "./data/content";
+import { apiUrl } from "./lib/api";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import About from "./components/About";
@@ -18,7 +19,7 @@ export default function App() {
 
   useEffect(() => {
     let cancelled = false;
-    fetch("/api/portfolio/all")
+    fetch(apiUrl("/api/portfolio/all"))
       .then((res) => (res.ok ? res.json() : Promise.reject(res.status)))
       .then((json: PortfolioData) => {
         if (!cancelled) setData(json);
